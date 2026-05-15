@@ -1,0 +1,14 @@
+{
+  "name": "BarBeuQ",
+  "short_name": "BarBeuQ",
+  "description": "Calculateur de prix au kilo de charbon et compagnon BBQ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1410",
+  "theme_color": "#d2691e",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

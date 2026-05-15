@@ -1,0 +1,49 @@
+/* === BRAISE 🔥 === */
+body[data-theme=braise][data-mode=light]{
+  --bg:#fff5ec;--text:#2b1a10;--card:#fff;--border:#f0d0b0;--input:#fff8f1;
+  --accent:#d2691e;--accent-text:#fff;--accent-soft:#ffe8d4;
+  --header:#d2691e;--header-text:#fff;--shadow:rgba(210,105,30,.15)}
+body[data-theme=braise][data-mode=dark]{
+  --bg:#1a1410;--text:#f5e6d3;--card:#2a1f17;--border:#4a3528;--input:#1f1812;
+  --accent:#ff8c42;--accent-text:#1a1410;--accent-soft:#3a2418;
+  --header:#3a1f10;--header-text:#ff8c42;--shadow:rgba(0,0,0,.5)}
+
+/* === FORÊT 🌲 === */
+body[data-theme=foret][data-mode=light]{
+  --bg:#f3f7ef;--text:#1c2a18;--card:#fff;--border:#cfdcc0;--input:#f7faf3;
+  --accent:#3e7a2e;--accent-text:#fff;--accent-soft:#d8ead0;
+  --header:#3e7a2e;--header-text:#fff;--shadow:rgba(62,122,46,.15)}
+body[data-theme=foret][data-mode=dark]{
+  --bg:#101a10;--text:#dfe9d4;--card:#1a261a;--border:#33442e;--input:#152015;
+  --accent:#76c862;--accent-text:#101a10;--accent-soft:#1f3320;
+  --header:#1a2e18;--header-text:#76c862;--shadow:rgba(0,0,0,.5)}
+
+/* === OCÉAN 🌊 === */
+body[data-theme=ocean][data-mode=light]{
+  --bg:#eff7fa;--text:#0e1f2a;--card:#fff;--border:#bdd9e5;--input:#f3f9fb;
+  --accent:#1e88a8;--accent-text:#fff;--accent-soft:#cce8f0;
+  --header:#1e88a8;--header-text:#fff;--shadow:rgba(30,136,168,.15)}
+body[data-theme=ocean][data-mode=dark]{
+  --bg:#0c1820;--text:#d6e8ef;--card:#142631;--border:#2a4655;--input:#10202a;
+  --accent:#4dd0e1;--accent-text:#0c1820;--accent-soft:#1a3340;
+  --header:#13283a;--header-text:#4dd0e1;--shadow:rgba(0,0,0,.5)}
+
+/* === SOLEIL ☀️ === */
+body[data-theme=soleil][data-mode=light]{
+  --bg:#fffaeb;--text:#3a2810;--card:#fff;--border:#f0dba0;--input:#fffbed;
+  --accent:#d49a1c;--accent-text:#fff;--accent-soft:#fce8b8;
+  --header:#d49a1c;--header-text:#fff;--shadow:rgba(212,154,28,.15)}
+body[data-theme=soleil][data-mode=dark]{
+  --bg:#1f1a0d;--text:#f5e9c8;--card:#2e2614;--border:#534428;--input:#251f10;
+  --accent:#f5c842;--accent-text:#1f1a0d;--accent-soft:#3a2f16;
+  --header:#3a2f14;--header-text:#f5c842;--shadow:rgba(0,0,0,.5)}
+
+/* === CHARBON 🖤 === */
+body[data-theme=charbon][data-mode=light]{
+  --bg:#f4f5f6;--text:#1c1f22;--card:#fff;--border:#d4d6d9;--input:#f8f9fa;
+  --accent:#444a52;--accent-text:#fff;--accent-soft:#dde0e3;
+  --header:#444a52;--header-text:#fff;--shadow:rgba(0,0,0,.12)}
+body[data-theme=charbon][data-mode=dark]{
+  --bg:#121315;--text:#e3e5e8;--card:#1d1f22;--border:#34373c;--input:#16181b;
+  --accent:#a0a6ad;--accent-text:#121315;--accent-soft:#262a30;
+  --header:#1c1e21;--header-text:#a0a6ad;--shadow:rgba(0,0,0,.5)}
