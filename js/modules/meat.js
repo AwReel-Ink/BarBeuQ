@@ -8,73 +8,74 @@ const Meat = (() => {
   };
 
   const FOODS = [
-    { id:'sausage',  label:'🌭 Saucisses/Merguez', cat:'boneless' },
-    { id:'brochette',label:'🍢 Brochettes',         cat:'boneless' },
-    { id:'steak',    label:'🥩 Steaks/Entrecôtes',  cat:'boneless' },
-    { id:'porkrib',  label:'🍖 Côtes (porc/agneau)',cat:'bone' },
-    { id:'chicken',  label:'🍗 Poulet (cuisses/ailes)', cat:'bone' },
-    { id:'fish',     label:'🐟 Poisson',            cat:'fish' },
-    { id:'veg',      label:'🥦 Légumes grillés',    cat:'veg' }
+    { id:'sausage',  label:'🌭 Saucisses / Merguez', cat:'boneless' },
+    { id:'brochette',label:'🍢 Brochettes',          cat:'boneless' },
+    { id:'steak',    label:'🥩 Steaks / Entrecôtes', cat:'boneless' },
+    { id:'porkrib',  label:'🍖 Côtes (porc, agneau)',cat:'bone' },
+    { id:'chicken',  label:'🍗 Poulet',              cat:'bone' },
+    { id:'fish',     label:'🐟 Poisson',             cat:'fish' },
+    { id:'veg',      label:'🥦 Légumes grillés',     cat:'veg' }
   ];
 
-  const selected = new Set();
+  // Sélection de départ : le grand classique, pour voir un résultat tout de suite
+  const selected = new Set(['sausage', 'brochette']);
 
   function renderChoices(){
     const box = document.getElementById('meatChoices');
     box.innerHTML = FOODS.map(f =>
-      `<div class="check-item ${selected.has(f.id)?'active':''}" data-id="${f.id}">${f.label}</div>`
+      `<button type="button" class="chip ${selected.has(f.id) ? 'active' : ''}" data-id="${f.id}" aria-pressed="${selected.has(f.id)}">${f.label}</button>`
     ).join('');
-    box.querySelectorAll('.check-item').forEach(el => el.addEventListener('click', () => {
+    box.querySelectorAll('.chip').forEach(el => el.addEventListener('click', () => {
       const id = el.dataset.id;
       if (selected.has(id)) selected.delete(id); else selected.add(id);
-      el.classList.toggle('active');
+      el.classList.toggle('active', selected.has(id));
+      el.setAttribute('aria-pressed', selected.has(id));
       compute();
     }));
   }
 
+  function val(id){ return Math.max(0, parseInt(document.getElementById(id).value, 10) || 0); }
+
   function compute(){
-    const k = parseInt(document.getElementById('nbKids').value)||0;
-    const a = parseInt(document.getElementById('nbAdults').value)||0;
-    const b = parseInt(document.getElementById('nbBig').value)||0;
-    const totalPeople = k+a+b;
+    const k = val('nbKids'), a = val('nbAdults'), b = val('nbBig');
+    const totalPeople = k + a + b;
     const res = document.getElementById('meatResult');
 
     if (!totalPeople || !selected.size){
-      res.innerHTML = '<span class="result-label">Sélectionne des invités et des aliments</span>';
+      res.innerHTML = `<div class="big-total"><span class="result-label">Ta liste de courses</span>
+        <span class="result-sub">${!totalPeople ? 'Ajoute au moins un invité' : 'Choisis au moins un aliment'}</span></div>`;
       return;
     }
 
-    // Répartition équitable entre les aliments choisis dans la même catégorie
-    // Stratégie : pour chaque aliment, on prend la ration complète divisée par le nb d'aliments de SA catégorie
+    // Répartition : chaque aliment prend une part de la ration de SA catégorie
     const catCounts = {};
     selected.forEach(id => {
-      const f = FOODS.find(x => x.id===id);
-      catCounts[f.cat] = (catCounts[f.cat]||0)+1;
+      const f = FOODS.find(x => x.id === id);
+      catCounts[f.cat] = (catCounts[f.cat] || 0) + 1;
     });
 
-    let html = '<span class="result-label">Quantités estimées</span>';
+    let lines = '';
     let totalGrams = 0;
-    selected.forEach(id => {
-      const f = FOODS.find(x => x.id===id);
+    FOODS.filter(f => selected.has(f.id)).forEach(f => {
       const r = RATES[f.cat];
-      const share = 1 / catCounts[f.cat];
-      const g = (k*r.kid + a*r.adult + b*r.big) * share;
+      const g = (k * r.kid + a * r.adult + b * r.big) / catCounts[f.cat];
       totalGrams += g;
-      html += `<div class="result-line"><span>${f.label}</span><strong>${formatWeight(g)}</strong></div>`;
+      lines += `<div class="result-line"><span>${f.label}</span><strong>${formatWeight(g)}</strong></div>`;
     });
 
-    const charbonShort = totalPeople * 0.5;
-    const charbonLong  = totalPeople * 0.8;
-    html += `<div class="result-line" style="margin-top:8px"><span>👥 Total invités</span><strong>${totalPeople}</strong></div>`;
-    html += `<div class="result-line"><span>🍖 Total viande/aliments</span><strong>${formatWeight(totalGrams)}</strong></div>`;
-    html += `<div class="result-line"><span>🔥 Charbon (BBQ ~30 min)</span><strong>${charbonShort.toFixed(1)} kg</strong></div>`;
-    html += `<div class="result-line"><span>🔥 Charbon (BBQ ~1h+)</span><strong>${charbonLong.toFixed(1)} kg</strong></div>`;
-
-    res.innerHTML = html;
+    res.innerHTML = `
+      <div class="big-total">
+        <span class="result-label">À acheter pour ${totalPeople} personne${totalPeople > 1 ? 's' : ''}</span>
+        <span class="result-value">${formatWeight(totalGrams)}</span>
+      </div>
+      ${lines}
+      <div class="section-mini">🔥 Charbon</div>
+      <div class="result-line"><span>BBQ rapide (~30 min)</span><strong>${UI.num(totalPeople * 0.5, 1)} kg</strong></div>
+      <div class="result-line"><span>BBQ long (1 h et +)</span><strong>${UI.num(totalPeople * 0.8, 1)} kg</strong></div>`;
   }
 
   function formatWeight(g){
-    if (g >= 1000) return (g/1000).toFixed(2).replace('.',',') + ' kg';
+    if (g >= 1000) return UI.num(g / 1000) + ' kg';
     return Math.round(g) + ' g';
   }
 
@@ -82,8 +83,7 @@ const Meat = (() => {
     renderChoices();
     document.querySelectorAll('#page-meat .btn-step').forEach(b => b.addEventListener('click', () => {
       const inp = document.getElementById(b.dataset.target);
-      const v = Math.max(0, (parseInt(inp.value)||0) + parseInt(b.dataset.step));
-      inp.value = v;
+      inp.value = Math.max(0, (parseInt(inp.value, 10) || 0) + parseInt(b.dataset.step, 10));
       compute();
     }));
     ['nbKids','nbAdults','nbBig'].forEach(id =>

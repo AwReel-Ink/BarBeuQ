@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#d2691e">
-<title>BarBeuQ - Calculateur BBQ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3a1f10">
+<title>BarBeuQ - Compagnon BBQ</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -14,213 +14,245 @@
 <body data-theme="braise" data-mode="dark">
 
 <header class="app-header">
-  <button id="btnHome" class="btn-icon" aria-label="Accueil" hidden>🏠</button>
-  <h1 id="appTitle">🔥 BarBeuQ</h1>
-  <button id="btnSettings" class="btn-icon" aria-label="Paramètres">⚙️</button>
+  <div class="brand"><span class="brand-flame">🔥</span> BarBeuQ</div>
+  <div class="header-page" id="headerPage">Charbon</div>
 </header>
 
 <main id="app">
 
-  <!-- ACCUEIL -->
-  <section id="page-home" class="page active">
-    <h2 class="section-title">Que veux-tu faire ?</h2>
-    <div class="tiles">
-      <button class="tile" data-page="calculator">
-        <span class="tile-icon">🧮</span>
-        <span class="tile-label">Prix au kilo</span>
-        <span class="tile-desc">Calcule le prix/kg d'un sac</span>
-      </button>
-      <button class="tile" data-page="comparator">
-        <span class="tile-icon">🆚</span>
-        <span class="tile-label">Comparateur</span>
-        <span class="tile-desc">Sacs, magasins & favoris</span>
-      </button>
-      <!--
-      <button class="tile" data-page="carnet">
-        <span class="tile-icon">📒</span>
-        <span class="tile-label">Mes favoris</span>
-        <span class="tile-desc">Carnet de marques</span>
-      </button>
-      -->
-      <button class="tile" data-page="wood">
-        <span class="tile-icon">🪵</span>
-        <span class="tile-label">Charbon ↔ Bois</span>
-        <span class="tile-desc">Convertisseur</span>
-      </button>
-      <button class="tile" data-page="meat">
-        <span class="tile-icon">🥩</span>
-        <span class="tile-label">Quantité viande</span>
-        <span class="tile-desc">Combien acheter ?</span>
-      </button>
-      <button class="tile" data-page="guide">
-        <span class="tile-icon">🌡️</span>
-        <span class="tile-label">Guide cuisson</span>
-        <span class="tile-desc">Températures & temps</span>
-      </button>
-    </div>
-  </section>
+  <!-- ============ CHARBON : prix au kilo + conversion bois ============ -->
+  <section id="page-calculator" class="page" data-title="Charbon">
 
-  <!-- CALCULATEUR PRIX/KG -->
-  <section id="page-calculator" class="page">
-    <h2 class="section-title">🧮 Prix au kilo</h2>
-    <div class="card">
-      <div class="tabs">
-        <button class="tab active" data-type="bois" data-density="0.15">Charbon de bois</button>
-        <button class="tab" data-type="briquette" data-density="0.35">Briquettes</button>
+    <div class="card card-hero">
+      <div class="card-head">
+        <h2>🧮 Prix au kilo</h2>
+        <span class="card-sub">Quel sac est vraiment le moins cher ?</span>
       </div>
-      <label>Prix du sac (€)
-        <input type="number" id="calcPrice" inputmode="decimal" step="0.01" placeholder="Ex: 15.00">
-      </label>
-      <div class="toggle-unit">
-        <button class="unit-btn active" data-unit="L">En litres</button>
-        <button class="unit-btn" data-unit="kg">En kilos</button>
+
+      <div class="seg" id="calcType" role="tablist">
+        <button class="seg-btn active" data-type="bois" data-density="0.15">Charbon de bois</button>
+        <button class="seg-btn" data-type="briquette" data-density="0.35">Briquettes</button>
       </div>
-      <label id="lblQty">Volume du sac (litres)
-        <input type="number" id="calcQty" inputmode="decimal" step="0.1" placeholder="Ex: 40">
-      </label>
-      <details class="advanced">
-        <summary>⚙️ Densité avancée</summary>
-        <label>Densité (kg/L)
-          <input type="number" id="calcDensity" inputmode="decimal" step="0.01" value="0.15">
+
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Prix du sac</span>
+          <span class="input-suffix">
+            <input type="number" id="calcPrice" inputmode="decimal" step="0.01" min="0" placeholder="15,00">
+            <span class="suffix">€</span>
+          </span>
         </label>
-        <p class="hint">Par défaut : 0,15 kg/L (charbon de bois) — 0,35 kg/L (briquettes)</p>
-      </details>
-      <div class="result-box" id="calcResult">
+        <label class="field">
+          <span class="field-label" id="lblQty">Contenance</span>
+          <span class="input-suffix">
+            <input type="number" id="calcQty" inputmode="decimal" step="0.1" min="0" placeholder="40">
+            <span class="suffix" id="calcQtySuffix">L</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="seg seg-small" id="calcUnit">
+        <button class="seg-btn active" data-unit="L">Sac en litres</button>
+        <button class="seg-btn" data-unit="kg">Sac en kilos</button>
+      </div>
+
+      <div class="result" id="calcResult">
         <span class="result-label">Prix au kilo</span>
         <span class="result-value">— €/kg</span>
+        <span class="result-sub" id="calcResultSub">Renseigne le prix et la contenance</span>
       </div>
-      <button class="btn-primary" id="calcSaveBtn">💾 Sauvegarder dans favoris</button>
-    </div>
-  </section>
 
-  <!-- COMPARATEUR -->
-  <section id="page-comparator" class="page">
-    <h2 class="section-title">🆚 Comparateur de sacs</h2>
-    <div class="card">
-      <button class="btn-primary" id="compAddBtn">➕ Ajouter un sac</button>
-      <button class="btn-secondary" id="compImportBtn">📒 Importer depuis favoris</button>
-    </div>
-    <div id="compList" class="comp-list"></div>
-  </section>
+      <details class="advanced" id="calcAdvanced">
+        <summary>Densité : <strong id="calcDensityLabel">0,15 kg/L</strong> <span class="muted">· modifier</span></summary>
+        <label class="field">
+          <span class="field-label">Densité (kg par litre)</span>
+          <input type="number" id="calcDensity" inputmode="decimal" step="0.01" min="0" value="0.15">
+        </label>
+        <p class="hint">Par défaut : 0,15 kg/L pour le charbon de bois, 0,35 kg/L pour les briquettes.</p>
+      </details>
 
-  <!-- CARNET -->
-  <section id="page-carnet" class="page">
-    <h2 class="section-title">📒 Mes favoris</h2>
-    <div class="card">
-      <button class="btn-primary" id="carnetAddBtn">➕ Ajouter un sac</button>
+      <button class="btn btn-primary" id="calcSaveBtn" disabled>➕ Ajouter à mes sacs</button>
     </div>
-    <div id="carnetList" class="carnet-list"></div>
-  </section>
 
-  <!-- BOIS -->
-  <section id="page-wood" class="page">
-    <h2 class="section-title">🪵 Charbon ↔ Bois</h2>
     <div class="card">
-      <div class="toggle-unit">
-        <button class="conv-btn active" data-conv="c2w">Charbon → Bois</button>
-        <button class="conv-btn" data-conv="w2c">Bois → Charbon</button>
+      <div class="card-head">
+        <h2>🪵 Charbon ↔ Bois</h2>
+        <span class="card-sub">1 kg de charbon ≈ 2,5 kg de bois sec</span>
       </div>
-      <label id="lblConv">Quantité de charbon (kg)
-        <input type="number" id="convInput" inputmode="decimal" step="0.1" placeholder="Ex: 2">
-      </label>
-      <div class="result-box" id="convResult">
-        <span class="result-label">Équivalent</span>
-        <span class="result-value">— kg</span>
+      <div class="seg seg-small" id="convMode">
+        <button class="seg-btn active" data-conv="c2w">J'ai du charbon</button>
+        <button class="seg-btn" data-conv="w2c">J'ai du bois</button>
       </div>
-      <p class="hint">⚖️ Ratio énergétique : 1 kg de charbon ≈ 2,5 kg de bois sec.</p>
-    </div>
-  </section>
-
-  <!-- VIANDE -->
-  <section id="page-meat" class="page">
-    <h2 class="section-title">🥩 Quantité de viande</h2>
-    <div class="card">
-      <h3>Nombre d'invités</h3>
-      <div class="counter">
-        <label>👶 Enfants (-12 ans)</label>
-        <div class="counter-row">
-          <button class="btn-step" data-target="nbKids" data-step="-1">−</button>
-          <input type="number" id="nbKids" value="0" min="0">
-          <button class="btn-step" data-target="nbKids" data-step="1">+</button>
+      <div class="conv-row">
+        <label class="field">
+          <span class="field-label" id="lblConv">Charbon</span>
+          <span class="input-suffix">
+            <input type="number" id="convInput" inputmode="decimal" step="0.1" min="0" placeholder="2">
+            <span class="suffix">kg</span>
+          </span>
+        </label>
+        <span class="conv-arrow">→</span>
+        <div class="conv-out" id="convResult">
+          <span class="result-label">Bois sec</span>
+          <span class="result-value">— kg</span>
         </div>
       </div>
-      <div class="counter">
-        <label>👤 Mangeurs normaux</label>
-        <div class="counter-row">
-          <button class="btn-step" data-target="nbAdults" data-step="-1">−</button>
-          <input type="number" id="nbAdults" value="4" min="0">
-          <button class="btn-step" data-target="nbAdults" data-step="1">+</button>
-        </div>
-      </div>
-      <div class="counter">
-        <label>🍖 Gros mangeurs</label>
-        <div class="counter-row">
-          <button class="btn-step" data-target="nbBig" data-step="-1">−</button>
-          <input type="number" id="nbBig" value="0" min="0">
-          <button class="btn-step" data-target="nbBig" data-step="1">+</button>
-        </div>
-      </div>
-      <h3>Types d'aliments</h3>
-      <div id="meatChoices" class="checks"></div>
-      <div class="result-box" id="meatResult"></div>
-      <p class="hint">💡 Pour le charbon : ~0,5 kg / personne (BBQ 30 min) — ~0,8 kg / pers (BBQ 1h+)</p>
     </div>
+
+    <p class="hint center">🔥 Quantité de charbon : ~0,5 kg/pers. pour 30 min, ~0,8 kg/pers. pour 1 h et plus.</p>
   </section>
 
-  <!-- GUIDE -->
-  <section id="page-guide" class="page">
-    <h2 class="section-title">🌡️ Guide de cuisson</h2>
-    <div class="card">
-      <p class="hint">📌 Temps indicatifs sur braises chaudes (cuisson directe). Ajustez selon l'épaisseur et vos goûts.</p>
-      <p class="hint">🔥 <strong>Quantité charbon :</strong> ~0,5 kg/pers pour 30 min de BBQ, ~0,8 kg/pers pour 1h+.</p>
+  <!-- ============ MES SACS (carnet + comparateur) ============ -->
+  <section id="page-comparator" class="page" data-title="Mes sacs">
+    <div class="toolbar">
+      <button class="btn btn-primary btn-add" id="compAddBtn">➕ Ajouter un sac</button>
+      <div class="toolbar-row" id="compTools" hidden>
+        <input type="search" id="compSearch" placeholder="🔎 Rechercher un sac, un magasin…" autocomplete="off">
+        <div class="seg seg-small" id="compSort">
+          <button class="seg-btn active" data-sort="prix">💶 Prix/kg</button>
+          <button class="seg-btn" data-sort="note">⭐ Note</button>
+        </div>
+      </div>
     </div>
+    <div id="compList" class="sack-list"></div>
+  </section>
+
+  <!-- ============ INVITÉS : quantités ============ -->
+  <section id="page-meat" class="page" data-title="Invités">
+    <div class="card">
+      <div class="card-head">
+        <h2>👥 Combien d'invités ?</h2>
+      </div>
+      <div class="counters">
+        <div class="counter">
+          <span class="counter-emoji">👶</span>
+          <span class="counter-label">Enfants<small>-12 ans</small></span>
+          <div class="stepper">
+            <button class="btn-step" data-target="nbKids" data-step="-1" aria-label="Moins">−</button>
+            <input type="number" id="nbKids" value="0" min="0" inputmode="numeric">
+            <button class="btn-step" data-target="nbKids" data-step="1" aria-label="Plus">+</button>
+          </div>
+        </div>
+        <div class="counter">
+          <span class="counter-emoji">🙂</span>
+          <span class="counter-label">Adultes<small>appétit normal</small></span>
+          <div class="stepper">
+            <button class="btn-step" data-target="nbAdults" data-step="-1" aria-label="Moins">−</button>
+            <input type="number" id="nbAdults" value="4" min="0" inputmode="numeric">
+            <button class="btn-step" data-target="nbAdults" data-step="1" aria-label="Plus">+</button>
+          </div>
+        </div>
+        <div class="counter">
+          <span class="counter-emoji">🍖</span>
+          <span class="counter-label">Gros mangeurs<small>gros appétit</small></span>
+          <div class="stepper">
+            <button class="btn-step" data-target="nbBig" data-step="-1" aria-label="Moins">−</button>
+            <input type="number" id="nbBig" value="0" min="0" inputmode="numeric">
+            <button class="btn-step" data-target="nbBig" data-step="1" aria-label="Plus">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>🍽️ Au menu</h2>
+        <span class="card-sub">Touche pour ajouter ou retirer</span>
+      </div>
+      <div id="meatChoices" class="chips"></div>
+    </div>
+
+    <div class="card card-result" id="meatResult"></div>
+  </section>
+
+  <!-- ============ CUISSON ============ -->
+  <section id="page-guide" class="page" data-title="Cuisson">
+    <input type="search" id="guideSearch" class="search-big" placeholder="🔎 Poulet, steak, poisson…" autocomplete="off">
     <div id="guideList" class="guide-list"></div>
+    <p class="hint center">📌 Temps indicatifs sur braises, en cuisson directe. Ajuste selon l'épaisseur et tes goûts.</p>
   </section>
 
-  <!-- PARAMÈTRES -->
-  <section id="page-settings" class="page">
-    <h2 class="section-title">⚙️ Paramètres</h2>
+  <!-- ============ PARAMÈTRES ============ -->
+  <section id="page-settings" class="page" data-title="Réglages">
     <div class="card">
-      <h3>Thème</h3>
+      <div class="card-head"><h2>🎨 Apparence</h2></div>
       <div class="themes-grid">
-        <button class="theme-btn" data-theme="braise">🔥<span>Braise</span></button>
-        <button class="theme-btn" data-theme="foret">🌲<span>Forêt</span></button>
-        <button class="theme-btn" data-theme="ocean">🌊<span>Océan</span></button>
-        <button class="theme-btn" data-theme="soleil">☀️<span>Soleil</span></button>
-        <button class="theme-btn" data-theme="charbon">🖤<span>Charbon</span></button>
+        <button class="theme-btn" data-theme="braise"><span class="theme-dot" style="--c:#ff8c42"></span>Braise</button>
+        <button class="theme-btn" data-theme="foret"><span class="theme-dot" style="--c:#76c862"></span>Forêt</button>
+        <button class="theme-btn" data-theme="ocean"><span class="theme-dot" style="--c:#4dd0e1"></span>Océan</button>
+        <button class="theme-btn" data-theme="soleil"><span class="theme-dot" style="--c:#f5c842"></span>Soleil</button>
+        <button class="theme-btn" data-theme="charbon"><span class="theme-dot" style="--c:#a0a6ad"></span>Charbon</button>
       </div>
-      <h3>Mode</h3>
-      <div class="toggle-unit">
-        <button class="mode-btn" data-mode="light">☀️ Clair</button>
-        <button class="mode-btn active" data-mode="dark">🌙 Sombre</button>
+      <div class="seg seg-small" style="margin-top:14px">
+        <button class="seg-btn mode-btn" data-mode="light">☀️ Clair</button>
+        <button class="seg-btn mode-btn active" data-mode="dark">🌙 Sombre</button>
       </div>
-      <h3>Installation</h3>
-      <button class="btn-primary" id="btnInstall" hidden>📲 Installer l'app</button>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>💾 Mes données</h2>
+        <span class="card-sub" id="dataCount">Tes sacs, leurs magasins et leurs photos</span>
+      </div>
+      <div class="data-actions">
+        <button class="btn btn-secondary" id="btnExport">📤 Exporter</button>
+        <button class="btn btn-secondary" id="btnImport">📥 Importer une sauvegarde</button>
+        <button class="btn btn-secondary" id="btnMaison">🏠 Serveur maison</button>
+      </div>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+
+    <div class="card" id="installCard" hidden>
+      <div class="card-head"><h2>📲 Installation</h2></div>
+      <button class="btn btn-primary" id="btnInstall">📲 Installer l'app</button>
     </div>
   </section>
 
+  <footer class="app-footer">
+    <small>© LEROY Aurélien - 2026 - Tous droits Réservés - Version 1.1.0</small>
+  </footer>
 </main>
 
-<!-- MODAL générique -->
+<!-- Barre d'onglets -->
+<nav class="tabbar" aria-label="Navigation">
+  <button class="tab-btn" data-page="calculator"><span class="tab-ico">🔥</span><span class="tab-txt">Charbon</span></button>
+  <button class="tab-btn" data-page="comparator"><span class="tab-ico">🛒</span><span class="tab-txt">Mes sacs</span></button>
+  <button class="tab-btn" data-page="meat"><span class="tab-ico">🥩</span><span class="tab-txt">Invités</span></button>
+  <button class="tab-btn" data-page="guide"><span class="tab-ico">🌡️</span><span class="tab-txt">Cuisson</span></button>
+  <button class="tab-btn" data-page="settings"><span class="tab-ico">⚙️</span><span class="tab-txt">Réglages</span></button>
+</nav>
+
+<!-- Feuille modale (formulaires) -->
 <div id="modal" class="modal" hidden>
-  <div class="modal-content">
-    <button class="modal-close" id="modalClose">✖️</button>
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <div class="sheet-grip"></div>
+    <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
     <div id="modalBody"></div>
   </div>
 </div>
 
-<footer class="app-footer">
-  <small>© LEROY Aurélien - 2026 - Tous droits Réservés - Version 1.0.0</small>
-</footer>
+<!-- Confirmation -->
+<div id="dialog" class="dialog" hidden>
+  <div class="dialog-box" role="alertdialog" aria-modal="true">
+    <p id="dialogMsg"></p>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" id="dialogCancel">Annuler</button>
+      <button class="btn btn-primary" id="dialogOk">OK</button>
+    </div>
+  </div>
+</div>
 
+<div id="toast" class="toast" hidden></div>
+
+<script src="sync-maison.js"></script>
 <script src="js/db.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/modules/calculator.js"></script>
 <script src="js/modules/comparator.js"></script>
-<script src="js/modules/carnet.js"></script>
 <script src="js/modules/wood.js"></script>
 <script src="js/modules/meat.js"></script>
 <script src="js/modules/guide.js"></script>
+<script src="js/modules/donnees.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

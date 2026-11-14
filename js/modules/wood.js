@@ -3,32 +3,27 @@ const Wood = (() => {
   let mode = 'c2w';
 
   function compute(){
-    const v = parseFloat(document.getElementById('convInput').value);
+    const v = UI.readNum(document.getElementById('convInput'));
     const box = document.querySelector('#convResult .result-value');
     const lbl = document.querySelector('#convResult .result-label');
-    if (!v || v<=0){ box.textContent = '— kg'; return; }
-    if (mode === 'c2w'){
-      lbl.textContent = 'Équivalent en bois sec';
-      box.textContent = (v * RATIO).toFixed(2).replace('.',',') + ' kg';
-    } else {
-      lbl.textContent = 'Équivalent en charbon';
-      box.textContent = (v / RATIO).toFixed(2).replace('.',',') + ' kg';
-    }
+    lbl.textContent = mode === 'c2w' ? 'Bois sec' : 'Charbon';
+    if (!(v > 0)){ box.textContent = '— kg'; return; }
+    box.textContent = UI.num(mode === 'c2w' ? v * RATIO : v / RATIO) + ' kg';
   }
 
   function setMode(m){
     mode = m;
-    document.querySelectorAll('#page-wood .conv-btn').forEach(b =>
+    document.querySelectorAll('#convMode .seg-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.conv === m));
-    document.getElementById('lblConv').childNodes[0].nodeValue =
-      m === 'c2w' ? 'Quantité de charbon (kg)' : 'Quantité de bois sec (kg)';
+    document.getElementById('lblConv').textContent = m === 'c2w' ? 'Charbon' : 'Bois sec';
     compute();
   }
 
   function init(){
-    document.querySelectorAll('#page-wood .conv-btn').forEach(b =>
+    document.querySelectorAll('#convMode .seg-btn').forEach(b =>
       b.addEventListener('click', () => setMode(b.dataset.conv)));
     document.getElementById('convInput').addEventListener('input', compute);
+    compute();
   }
 
   return { init };
